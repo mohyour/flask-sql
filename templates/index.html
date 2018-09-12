@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <h1> QUERY RESULTS</h1>
+  <div>
+    {{shark}}
+    <h3> Names </h3>
+    {% for name in names %}
+    <p>{{name}}</p>
+    {%endfor%}
+  </div>
+  <div>
+    <h3> Category count</h3>
+    {% for cat_name in category%}
+    <p>{{cat_name}}</p>
+    {%endfor%}
+  </div>
+</body>
+
+</html>
