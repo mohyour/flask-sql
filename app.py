@@ -1,13 +1,13 @@
-from flask import Flask, render_template, request, redirect
-from flask_wtf.csrf import CSRFProtect
+from flask import Flask, render_template, request, redirect, session
 import config
 import psycopg2
+import random
+import string
 
 
 # Initalize app
 app = Flask(__name__)
-# csrf
-csrf = CSRFProtect(app)
+
 # app config
 dev = config.Development
 app.config.from_object(dev)
@@ -16,6 +16,18 @@ app.config.from_object(dev)
 db = psycopg2.connect(dbname=dev.database, user=dev.user)
 con = db.cursor()
 
+def generate_random_string():
+    random_string = ''.join(random.choice(string.ascii_letters + 
+                            string.digits) for _ in range(32))
+    return random_string
+
+
+def generate_csrf_token():
+    if 'csrf_token' not in session:
+        session['csrf_token'] = generate_random_string()
+    return session['csrf_token']
+
+app.jinja_env.globals['csrf_token'] = generate_csrf_token
 
 @app.route('/queries')
 def get_queries():
