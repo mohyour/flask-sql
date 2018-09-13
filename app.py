@@ -1,10 +1,14 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
+from flask_wtf.csrf import CSRFProtect
 import config
 import psycopg2
 
 
 # Initalize app
 app = Flask(__name__)
+# csrf
+csrf = CSRFProtect(app)
+# app config
 dev = config.Development
 app.config.from_object(dev)
 
@@ -81,8 +85,9 @@ def add_film():
                         rental_rate, length, replacement_cost, rating) VALUES
                         (default, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
         con.execute(insert_data, (title, description, year, duration,
-                                  language, rate, length, replacement, rating))
+                                  language, rate, length, replacement, rating,))
         db.commit()
+        return redirect('/add')
     return render_template('film.html')
 
 
